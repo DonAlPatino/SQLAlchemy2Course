@@ -1,0 +1,10 @@
+SELECT enum_range(NULL::genderenum)
+
+create_type=False - НЕ пересоздавать ENUM
+    sa.Column('gender', sa.Enum('MALE', 'FEMALE', name='genderenum', create_type=False), nullable=False)
+
+    # Удаление типов ENUM
+    op.execute('DROP TYPE IF EXISTS ratingenum')
+    op.execute('DROP TYPE IF EXISTS genderenum')
+    op.execute('DROP TYPE IF EXISTS professionenum')
+    op.execute('DROP TYPE IF EXISTS statuspost')
