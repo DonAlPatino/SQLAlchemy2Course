@@ -46,3 +46,17 @@ class BaseDAO:
         result = await session.execute(query)
         record = result.scalar_one_or_none()
         return record
+
+    @classmethod
+    async def find_one_or_none(cls, session: AsyncSession, **filter_by):
+        query = select(cls.model).filter_by(**filter_by)
+        result = await session.execute(query)
+        record = result.scalar_one_or_none()
+        return record
+
+    @classmethod
+    async def find_all(cls, session: AsyncSession, **filter_by):
+        query = select(cls.model).filter_by(**filter_by)
+        result = await session.execute(query)
+        records = result.scalars().all()
+        return records
