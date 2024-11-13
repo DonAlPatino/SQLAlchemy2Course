@@ -47,17 +47,25 @@ async def select_full_user_info(session, user_id: int):
     return {'message': f'Пользователь с ID {user_id} не найден!'}
 
 
-info = run(select_full_user_info(user_id=1))
-print(info)
-# {'username': 'yakvenalex', 'email': 'example@example.com', 'profile': None}
+async def myrun():
+    info = await select_full_user_info(user_id=1)
+    print(info)
+    # {'username': 'yakvenalex', 'email': 'example@example.com', 'profile': None}
 
-info = run(select_full_user_info(user_id=4))
-print(info)
-# {'username': 'john_doe', 'email': 'john.doe@example.com', 'profile': {'first_name': 'John', 'last_name': 'Doe', 'age': 28, 'gender': 'мужчина', 'profession': 'инженер', 'interests': ['hiking', 'photography', 'coding'], 'contacts': {'phone': '+123456789', 'email': 'john.doe@example.com'}}}
+    info = await select_full_user_info(user_id=4)
+    print(info)
+    # {'username': 'john_doe', 'email': 'john.doe@example.com', 'profile': {'first_name': 'John', 'last_name': 'Doe', 'age': 28, 'gender': 'мужчина', 'profession': 'инженер', 'interests': ['hiking', 'photography', 'coding'], 'contacts': {'phone': '+123456789', 'email': 'john.doe@example.com'}}}
 
-info = run(select_full_user_info(user_id=1113))
-print(info)
-# {'message': 'Пользователь с ID 1113 не найден!'}
+    info = await select_full_user_info(user_id=1113)
+    print(info)
+    # {'message': 'Пользователь с ID 1113 не найден!'}
+
+    return {'finished'}
+
+
+res = run(myrun())
+print(res)
+
 
 @connection
 async def select_full_user_info_email(session, user_id: int, email: str):
@@ -76,7 +84,6 @@ async def select_all_users(session):
     if result:
         return result
     return {'message': f'Пользователь с ID не найден!'}
-
 
 # rez = run(select_all_users())
 # for i in rez:
