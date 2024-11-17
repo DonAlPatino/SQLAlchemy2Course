@@ -5,7 +5,7 @@ from dao.base import BaseDAO
 from models import User, Profile, Post, Comment
 
 
-class UserDAO(BaseDAO):
+class UserDAO(BaseDAO[User]):
     model = User
 
     @classmethod
@@ -72,13 +72,13 @@ class UserDAO(BaseDAO):
         return records  # Возвращаем список записей
 
 
-class ProfileDAO(BaseDAO):
+class ProfileDAO(BaseDAO[Profile]):
     model = Profile
 
 
-class PostDAO(BaseDAO):
+class PostDAO(BaseDAO[Post]):
     model = Post
 
 
-class CommentDAO(BaseDAO):
+class CommentDAO(BaseDAO[Comment]):
     model = Comment

@@ -5,8 +5,7 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from database import Base, DATABASE_URL
-from models import User, Comment, Post, Profile
+from dao.database import Base, DATABASE_URL
 
 from alembic import context
 

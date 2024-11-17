@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import connection
+from dao.database import connection
 from asyncio import run
 from models import User, Profile
 from sql_enums import GenderEnum, ProfessionEnum

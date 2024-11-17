@@ -14,22 +14,6 @@ engine = create_async_engine(url=DATABASE_URL)
 # Создаем фабрику сессий для взаимодействия с базой данных
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
-
-def connection(method):
-    async def wrapper(*args, **kwargs):
-        async with async_session_maker() as session:
-            try:
-                # Явно не открываем транзакции, так как они уже есть в контексте
-                return await method(*args, session=session, **kwargs)
-            except Exception as e:
-                await session.rollback()  # Откатываем сессию при ошибке
-                raise e  # Поднимаем исключение дальше
-            finally:
-                await session.close()  # Закрываем сессию
-
-    return wrapper
-
-
 uniq_str_an = Annotated[str, mapped_column(unique=True)]
 content_an = Annotated[str | None, mapped_column(Text)]
 array_or_none_an = Annotated[List[str] | None, mapped_column(ARRAY(String))]
