@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from dao.dao import UserDAO
 from asyncio import run
 from dao.session_maker import connection
+from models import User
 from schemas import UserPydantic, UsernameIdPydantic
 
 
@@ -86,17 +87,33 @@ async def select_full_user_info_email(session: AsyncSession, user_id: int, email
     return {'message': f'Пользователь с ID {user_id} не найден!'}
 
 
-info = run(select_full_user_info_email(user_id=21, email='bob.smith@example.com'))
-print(info)
+# info = run(select_full_user_info_email(user_id=21, email='bob.smith@example.com'))
+# print(info)
 
 @connection()
 async def select_all_users(session):
-    result = await UserDAO.find_all(session=session)
+    result = await UserDAO.find_all(session=session, filters=None)
     if result:
         return result
     return {'message': f'Пользователь с ID не найден!'}
+
 
 # rez = run(select_all_users())
 # for i in rez:
 #     rez = UsernameIdPydantic.from_orm(i)
 #     print(rez.dict())
+
+
+# @connection(commit=False)
+# async def get_select(session: AsyncSession, user_id: int):
+#     user = await session.get(User, user_id)
+#     print(UserPydantic.model_validate(user).model_dump())
+#
+# # run(get_select(user_id=21))
+
+@connection(commit=False)
+async def get_select(session: AsyncSession, user_id: int):
+    user = await UserDAO.find_one_or_none_by_id(session=session, data_id=user_id)
+    print(UserPydantic.model_validate(user).model_dump())
+
+run(get_select(user_id=21))

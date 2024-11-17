@@ -51,11 +51,9 @@ class BaseDAO(Generic[T]):
     async def find_one_or_none_by_id(cls, data_id: int, session: AsyncSession):
         # Найти запись по ID
         try:
-            query = select(cls.model).filter_by(id=data_id)
-            result = await session.execute(query)
-            record = result.scalar_one_or_none()
-            return record
+            return await session.get(cls.model, data_id)
         except SQLAlchemyError as e:
+            print(f"Error occurred: {e}")
             raise
 
     @classmethod
